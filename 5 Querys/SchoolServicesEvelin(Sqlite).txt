@@ -1,0 +1,144 @@
+--Tables
+
+CREATE TABLE [User] (
+    idUser serial PRIMARY KEY,
+    userName VARCHAR(50) UNIQUE NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    password VARCHAR(10) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    status BOOLEAN NOT NULL DEFAULT TRUE,
+    idUserCreate INT,
+    creationDate DATE,
+    idUserModify INT,
+    modifiedDate DATE
+);
+
+-- EmployeeType
+CREATE TABLE EmployeeType (
+    EmployeeTypeID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    Name VARCHAR(50) NOT NULL,
+    BaseSalary DECIMAL(10, 2) NOT NULL,
+    Hours INTEGER NOT NULL,
+    Status INTEGER DEFAULT 1 NOT NULL,
+ idUserCreate INT NOT NULL,
+    creationDate DATE NOT NULL,
+    idUserModify INT,
+    modifiedDate DATE
+);
+
+-- Employee
+CREATE TABLE Employee (
+    EmployeeID INTEGER PRIMARY KEY AUTOINCREMENT,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    MiddleName VARCHAR(50) NOT NULL,
+    PhoneNumber VARCHAR(15) NOT NULL,
+    Email VARCHAR(100) NOT NULL,
+    Gender CHAR(1) NOT NULL,
+    Position VARCHAR(50) NOT NULL,
+    Salary DECIMAL(10, 2) NOT NULL,
+    DateOfBirth DATE NOT NULL,
+    Address VARCHAR(100) NOT NULL,
+    ZipCode VARCHAR(10) NOT NULL,
+    RFC VARCHAR(13) NOT NULL,
+    SocialSecurity VARCHAR(15) NOT NULL,
+    EmployeeTypeID INTEGER NOT NULL,
+    Status INTEGER DEFAULT 1 NOT NULL,
+ idUserCreate INT NOT NULL,
+    creationDate DATE NOT NULL,
+    idUserModify INT,
+    modifiedDate DATE,
+    FOREIGN KEY (EmployeeTypeID) REFERENCES EmployeeType (EmployeeTypeID)
+);
+
+-- Career
+CREATE TABLE Career (
+    CareerID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name VARCHAR(50) NOT NULL,
+    Description VARCHAR(100) NOT NULL,
+    Status INTEGER DEFAULT 1 NOT NULL,
+ idUserCreate INT NOT NULL,
+    creationDate DATE NOT NULL,
+    idUserModify INT,
+    modifiedDate DATE
+);
+
+-- DocumentType
+CREATE TABLE DocumentType (
+    DocumentTypeID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name VARCHAR(50) NOT NULL,
+    Description VARCHAR(100) NOT NULL,
+    Status INTEGER DEFAULT 1 NOT NULL,
+ idUserCreate INT NOT NULL,
+    creationDate DATE NOT NULL,
+    idUserModify INT,
+    modifiedDate DATE
+);
+
+-- DocumentRequest
+CREATE TABLE DocumentRequest (
+    DocumentRequestID INTEGER PRIMARY KEY AUTOINCREMENT,
+    StudentID INTEGER NOT NULL,
+    DocumentTypeID INTEGER NOT NULL,
+    EmployeeID INTEGER NOT NULL,
+    RequestDate DATE NOT NULL,
+ idUserCreate INT NOT NULL,
+    creationDate DATE NOT NULL,
+    idUserModify INT,
+    modifiedDate DATE,
+    FOREIGN KEY (DocumentTypeID) REFERENCES DocumentType (DocumentTypeID),
+    FOREIGN KEY (EmployeeID) REFERENCES Employee (EmployeeID)
+);
+
+-- Índices
+CREATE INDEX IX_Employee ON Employee (EmployeeID);
+CREATE INDEX IX_EmployeeType ON EmployeeType (EmployeeTypeID);
+CREATE INDEX IX_Career ON Career (CareerID);
+CREATE INDEX IX_DocumentRequest ON DocumentRequest (DocumentRequestID);
+CREATE INDEX IX_DocumentType ON DocumentType (DocumentTypeID);
+
+-- Insert
+INSERT INTO EmployeeType (Name, BaseSalary, Hours)
+VALUES ('Full-Time', 50000.00, 40);
+
+INSERT INTO EmployeeType (Name, BaseSalary, Hours)
+VALUES ('Part-Time', 25000.00, 20);
+
+INSERT INTO EmployeeType (Name, BaseSalary, Hours)
+VALUES ('Contract', 35000.00, 30);
+
+INSERT INTO Employee (FirstName, LastName, MiddleName, PhoneNumber, Email, Gender, Position, Salary, DateOfBirth, Address, ZipCode, RFC, SocialSecurity, EmployeeTypeID, Status)
+VALUES ('John', 'Doe', 'A', '123-456-7890', 'john.doe@email.com', 'M', 'Manager', 60000.00, '1990-05-15', '123 Main St', '12345', 'ABC123456DEF', '123-45-6789', 1, 1);
+
+INSERT INTO Employee (FirstName, LastName, MiddleName, PhoneNumber, Email, Gender, Position, Salary, DateOfBirth, Address, ZipCode, RFC, SocialSecurity, EmployeeTypeID, Status)
+VALUES ('Jane', 'Smith', 'B', '987-654-3210', 'jane.smith@email.com', 'F', 'Assistant', 40000.00, '1995-09-20', '456 Elm St', '54321', 'XYZ987654ABC', '987-65-4321', 2, 1);
+
+INSERT INTO Employee (FirstName, LastName, MiddleName, PhoneNumber, Email, Gender, Position, Salary, DateOfBirth, Address, ZipCode, RFC, SocialSecurity, EmployeeTypeID, Status)
+VALUES ('David', 'Williams', 'C', '555-123-9876', 'david.williams@email.com', 'M', 'Developer', 55000.00, '1988-03-10', '789 Oak St', '67890', 'PQR555123XYZ', '555-12-3987', 1, 1);
+
+INSERT INTO Career (Name, Description, Status)
+VALUES ('Computer Science', 'Programs for the computer science field.', 1);
+
+INSERT INTO Career (Name, Description, Status)
+VALUES ('Business Administration', 'Programs for business management.', 1);
+
+INSERT INTO Career (Name, Description, Status)
+VALUES ('Mechanical Engineering', 'Programs for mechanical engineering.', 1);
+
+INSERT INTO DocumentType (Name, Description, Status)
+VALUES ('Transcript', 'Academic transcript document.', 1);
+
+INSERT INTO DocumentType (Name, Description, Status)
+VALUES ('Diploma', 'Certificate of completion.', 1);
+
+INSERT INTO DocumentType (Name, Description, Status)
+VALUES ('Recommendation Letter', 'Letter of recommendation.', 1);
+
+INSERT INTO DocumentRequest (StudentID, DocumentTypeID, EmployeeID, RequestDate)
+VALUES (1, 1, 1, '2023-10-15');
+
+INSERT INTO DocumentRequest (StudentID, DocumentTypeID, EmployeeID, RequestDate)
+VALUES (2, 2, 2, '2023-10-16');
+
+INSERT INTO DocumentRequest (StudentID, DocumentTypeID, EmployeeID, RequestDate)
+VALUES (3, 3, 3, '2023-10-17');
